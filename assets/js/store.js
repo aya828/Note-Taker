@@ -7,6 +7,13 @@ class Store {
     this.text = text;
   }
 
+  getItem() {
+    return $.ajax({
+      url: 'http://localhost:8080/api/notes',
+      method: 'GET'
+    });
+  }
+
   readFile() {
     fs.readFile('./db.json', "utf8", function(err) {
       if (err) {

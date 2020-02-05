@@ -13,30 +13,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("assets"));
 
-const Store = require("./assets/js/store")
+const Store = require("./assets/js/store");
+
 // Routes
 // =============================================================
 
-// Basic route that sends the user first to the AJAX Page
+// Basic route that sends the user first to the home page
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// Route to send user to notes page
 app.get("/notes", function(req, res) {
   res.sendFile(path.join(__dirname, "notes.html"));
 });
+
+// Route to get json response for GET method
+app.get("/api/notes", function(req, res) {
+  res.json()
+})
 
 app.post('/notes', function(req, res) {
   const newNote = req.body;
   console.log(newNote);
   res.json(newNote);
 });
-
-
-
-
-
-
 
 // Starts the server to begin listening
 // =============================================================
