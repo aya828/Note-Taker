@@ -7,43 +7,40 @@ class Store {
     this.text = text;
   }
 
-  getItem() {
-    return $.ajax({
-      url: 'http://localhost:8080/api/notes',
-      method: 'GET'
-    });
+  addNote(newNote) {
+    fs.readFile('./db.json', 'utf8', function(err, data) {
+      if (err) throw err;
+      let oldNotes = JSON.parse(data);
+      oldNotes.push(newNote);
+      let id = oldNotes.length;
+      newNote.id = id;
+      let jsonString = JSON.stringify(oldNotes);
+      fs.writeFile('./db.json', jsonString, (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+      });
+      console.log(oldNotes);
+    })
   }
 
-  readFile() {
-    fs.readFile('./db.json', "utf8", function(err) {
-      if (err) {
-        return console.log(err);
-      }
-    });
+  readNotes() {
+    return fs.readFileSync('./db.json', 'utf8');
   }
 
-  writeFile() {
-    fs.writeFile('./db.json', "utf8", function(err) {=
-      if (err) {
-        return console.log(err);
-      }
-    });
-  }
+  deleteNote(id) {
+    fs.readFile('./db.json', 'utf8', function(err, data) {
+      if (err) throw err;
+      let notes = JSON.parse(data);
+      let updatedNotes = notes.filter(function(note) {
+        return note.id != id;
+      })
+      let jsonString = JSON.stringify(updatedNotes);
+      fs.writeFile('./db.json', jsonString, (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+      });
+    })
 
-  appendFile() {
-    fs.appendFile('./db.json', "utf8", function(err) {
-      if (err) {
-        return console.log(err);
-      }
-    });
-  }
-
-  deleteFromFile() {
-    fs.unlink('./db.json', function(err) {
-      if (err) {
-        return console.log(err);
-      }
-    });
   }
 }
 

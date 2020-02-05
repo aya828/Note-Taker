@@ -30,11 +30,21 @@ app.get("/notes", function(req, res) {
 
 // Route to get json response for GET method
 app.get("/api/notes", function(req, res) {
-  res.json()
+  const notes = new Store().readNotes();
+  console.log(notes);
+  res.json(JSON.parse(notes));
 })
 
-app.post('/notes', function(req, res) {
+app.delete("/api/notes/:noteId", function(req, res) {
+  const deleteNote = req.params.noteId;
+  new Store().deleteNote(deleteNote);
+  console.log(deleteNote);
+  res.json();
+})
+
+app.post('/api/notes', function(req, res) {
   const newNote = req.body;
+  new Store().addNote(newNote)
   console.log(newNote);
   res.json(newNote);
 });
