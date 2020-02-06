@@ -37,10 +37,12 @@ app.get("/api/notes", function(req, res) {
 
 // Route to read db.json file and call deleteNote function
 app.delete("/api/notes/:noteId", function(req, res) {
+  const myStore = new Store();
   const deleteNote = req.params.noteId;
-  new Store().deleteNote(deleteNote);
+  myStore.deleteNote(deleteNote);
   console.log(deleteNote);
-  res.json();
+  const updatedStore = myStore.readNotes();
+  res.json(updatedStore);
 })
 
 // Route to read db.json file and call addNote function
